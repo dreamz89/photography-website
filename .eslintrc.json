@@ -10,11 +10,11 @@
         "standard-with-typescript"
     ],
     "overrides": [],
-    "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": 2020,
         "sourceType": "module",
-        "requireConfigFile": false
+        "requireConfigFile": false,
+        "project": ["tsconfig.json"]
     },
     "plugins": [
         "react",
