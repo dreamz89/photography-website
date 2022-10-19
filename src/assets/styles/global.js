@@ -1,10 +1,10 @@
-import { createGlobalStyle } from 'styled-components'
-import TungstenBoldWoff from 'assets/fonts/Tungsten-Bold.woff'
-import TungstenBoldWoff2 from 'assets/fonts/Tungsten-Bold.woff2'
-import TungstenSemiBoldWoff from 'assets/fonts/Tungsten-Bold.woff'
-import TungstenSemiBoldWoff2 from 'assets/fonts/Tungsten-Bold.woff2'
+import { createGlobalStyle } from "styled-components";
+import TungstenBoldWoff from "assets/fonts/Tungsten-Bold.woff";
+import TungstenBoldWoff2 from "assets/fonts/Tungsten-Bold.woff2";
+import TungstenSemiBoldWoff from "assets/fonts/Tungsten-Bold.woff";
+import TungstenSemiBoldWoff2 from "assets/fonts/Tungsten-Bold.woff2";
 
-export default createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -67,4 +67,4 @@ export default createGlobalStyle`
     font-style: normal;
     font-display: swap;
   }
-`
+`;
