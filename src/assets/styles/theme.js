@@ -15,11 +15,13 @@ export const theme = {
   borderRadius: {
     button: "24px",
     image: "10px",
+    dot: "2px",
   },
   spacings: {
     xs: "4px",
     s: "8px",
     m: "16px",
-    l: "32px",
+    l: "24px",
+    xl: "32px",
   },
 };
