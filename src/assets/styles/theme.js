@@ -1,7 +1,7 @@
 export const theme = {
-  colors: {
+  color: {
     black: "#202020",
-    white: "#FFFFF",
+    white: "#FFFFFF",
   },
   fontSize: {
     large: "220px",
@@ -15,5 +15,11 @@ export const theme = {
   borderRadius: {
     button: "24px",
     image: "10px",
+  },
+  spacings: {
+    xs: "4px",
+    s: "8px",
+    m: "16px",
+    l: "32px",
   },
 };

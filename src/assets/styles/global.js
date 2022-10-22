@@ -37,17 +37,16 @@ export const GlobalStyle = createGlobalStyle`
   ol, ul {
     list-style: none;
   }
-  blockquote, q {
-    quotes: none;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Tungsten', Helvetica;
+    letter-spacing: 0.04em;
   }
-  blockquote:before, blockquote:after,
-  q:before, q:after {
-    content: '';
-    content: none;
-  }
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
+
+  p, a {
+    font-family: Helvetica;
+    font-size: 16px;
+    letter-spacing: 0.08em;
   }
 
   @font-face {
