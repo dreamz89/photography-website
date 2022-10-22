@@ -5,7 +5,7 @@ export const data = [
       desktop: "image01@2x.jpg",
       alt: "",
     },
-    headline: "Everyday Flowers",
+    headline: "EverydayFlowers",
     author: "Johanna Hobel for Vouge",
     date: "Jun 2019",
     button: {
@@ -20,7 +20,7 @@ export const data = [
       desktop: "image02@2x.jpg",
       alt: "",
     },
-    headline: "The Wilder Night",
+    headline: "TheWilderNight",
     author: "Johanna Hobel for Wild",
     date: "Dec 2019",
     button: {
@@ -35,7 +35,7 @@ export const data = [
       desktop: "image03@2x.jpg",
       alt: "",
     },
-    headline: "Smooth Memories",
+    headline: "SmoothMemories",
     author: "Johanna Hobel for Chanel",
     date: "Feb 2020",
     button: {
@@ -50,7 +50,7 @@ export const data = [
       desktop: "image04@2x.jpg",
       alt: "",
     },
-    headline: "The Future Universe",
+    headline: "TheFutureUniverse",
     author: "Johanna Hobel for On",
     date: "Apr 2020",
     button: {
@@ -65,7 +65,7 @@ export const data = [
       desktop: "image05@2x.jpg",
       alt: "",
     },
-    headline: "She was born urban",
+    headline: "SheWasBornUrban",
     author: "Johanna Hobel for Si",
     date: "Dec 2021",
     button: {

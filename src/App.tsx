@@ -37,6 +37,12 @@ const TopLeft = styled.p`
   text-transform: uppercase;
 `;
 
+const BottomRight = styled(Details)`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+`;
+
 const ImagePrevious = styled.img`
   position: absolute;
   bottom: 0;
@@ -46,14 +52,21 @@ const ImagePrevious = styled.img`
   height: 35%;
 `;
 
-const ImageMain = styled.img`
+const ImageNext = styled.img`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid #000;
+  border-radius: ${({ theme }) => theme.borderRadius.image};
+  height: 35%;
+`;
+
+const HeadlineOutline = styled.img`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid #000;
-  border-radius: ${({ theme }) => theme.borderRadius.image};
-  height: 75%;
+  height: calc(40vh + 2px);
 `;
 
 const Center = styled.div`
@@ -61,18 +74,30 @@ const Center = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  height: 75vh;
+  width: calc(56.25vh + 2px); // aspect width of image plus border
+  overflow: hidden;
 `;
 
-const Headline = styled.h1`
-  color: ${({ theme }) => theme.color.white};
-  font-size: 160px;
-  letter-spacing: 0.04em;
-  line-height: 80%;
-  text-transform: uppercase;
-  text-align: center;
+const ImageMain = styled.img`
+  border: 1px solid #000;
+  border-radius: ${({ theme }) => theme.borderRadius.image};
+  height: 100%;
+`;
+
+const HeadlineFilled = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 40vh;
 `;
 
 const Indicator = styled.div`
+  position: absolute;
+  top: calc(50% + 20vh + 16px);
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   column-gap: ${({ theme }) => theme.spacings.l};
   justify-content: center;
@@ -94,21 +119,6 @@ const IndicatorDot = styled.div<{ active: boolean }>`
   border-radius: ${({ theme }) => theme.borderRadius.dot};
   height: 8px;
   width: 5px;
-`;
-
-const ImageNext = styled.img`
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 1px solid #000;
-  border-radius: ${({ theme }) => theme.borderRadius.image};
-  height: 35%;
-`;
-
-const BottomRight = styled(Details)`
-  position: absolute;
-  right: 0;
-  bottom: 0;
 `;
 
 // type Action = {
@@ -140,10 +150,13 @@ export function App() {
         <Background src={require(`./assets/images/${data[0].image.desktop}`)} />
         <Container>
           <TopLeft>xyz photography</TopLeft>
+          <BottomRight data={data[0]} />
           <ImagePrevious src={require(`./assets/images/${data[4].image.desktop}`)} />
-          <ImageMain src={require(`./assets/images/${data[0].image.desktop}`)} />
+          <ImageNext src={require(`./assets/images/${data[1].image.desktop}`)} />
+          <HeadlineOutline src={require(`./assets/images/text/${data[0].headline}Outline.svg`)} />
           <Center>
-            <Headline>{data[0].headline}</Headline>
+            <ImageMain src={require(`./assets/images/${data[0].image.desktop}`)} />
+            <HeadlineFilled src={require(`./assets/images/text/${data[0].headline}Filled.svg`)} />
             <Indicator>
               <IndicatorNumber>{`1 OF ${data.length}`}</IndicatorNumber>
               <IndicatorDots>
@@ -153,8 +166,6 @@ export function App() {
               </IndicatorDots>
             </Indicator>
           </Center>
-          <ImageNext src={require(`./assets/images/${data[1].image.desktop}`)} />
-          <BottomRight data={data[0]} />
         </Container>
       </Slide>
     </ThemeProvider>
