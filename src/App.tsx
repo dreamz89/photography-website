@@ -1,4 +1,4 @@
-// import { useReducer } from "react";
+import { useReducer } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "assets/styles/theme";
 import { GlobalStyle } from "assets/styles/global";
@@ -49,6 +49,7 @@ const ImagePrevious = styled.img`
   left: 0;
   border: 1px solid #000;
   border-radius: ${({ theme }) => theme.borderRadius.image};
+  cursor: pointer;
   height: 35%;
 `;
 
@@ -58,6 +59,7 @@ const ImageNext = styled.img`
   right: 0;
   border: 1px solid #000;
   border-radius: ${({ theme }) => theme.borderRadius.image};
+  cursor: pointer;
   height: 35%;
 `;
 
@@ -117,51 +119,64 @@ const IndicatorDot = styled.div<{ active: boolean }>`
   background-color: ${({ theme, active }) => (active ? theme.color.white : "transparent")};
   border: 1px solid ${({ theme }) => theme.color.white};
   border-radius: ${({ theme }) => theme.borderRadius.dot};
+  cursor: pointer;
   height: 8px;
   width: 5px;
 `;
 
-// type Action = {
-//   type: "increase" | "decrease";
-//   payload: number;
-// };
+type Action = { type: "increase" } | { type: "decrease" } | { type: "new"; payload: number };
 
-// const initialState = 0;
+const initialState = 0;
 
-// // useReducer is usually preferable to useState when the next state depends on the previous one.
-// function reducer(state: number, action: Action) {
-//   switch (action.type) {
-//     case "increase":
-//       return state < data.length - 1 ? state + 1 : initialState;
-//     case "decrease":
-//       return state > 0 ? state - 1 : data.length - 1;
-//     default:
-//       return state;
-//   }
-// }
+// useReducer is usually preferable to useState when the next state depends on the previous one.
+function reducer(state: number, action: Action) {
+  switch (action.type) {
+    case "increase":
+      return state < data.length - 1 ? state + 1 : initialState;
+    case "decrease":
+      return state > 0 ? state - 1 : data.length - 1;
+    case "new":
+      return action.payload;
+    default:
+      return state;
+  }
+}
 
 export function App() {
-  // const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const previousState = state > 0 ? state - 1 : data.length - 1;
+  const nextState = state < data.length - 1 ? state + 1 : initialState;
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Slide>
-        <Background src={require(`./assets/images/${data[0].image.desktop}`)} />
+        <Background src={require(`./assets/images/${data[state].image.desktop}`)} />
         <Container>
           <TopLeft>xyz photography</TopLeft>
           <BottomRight data={data[0]} />
-          <ImagePrevious src={require(`./assets/images/${data[4].image.desktop}`)} />
-          <ImageNext src={require(`./assets/images/${data[1].image.desktop}`)} />
-          <HeadlineOutline src={require(`./assets/images/text/${data[0].headline}Outline.svg`)} />
+          <ImagePrevious
+            onClick={() => dispatch({ type: "decrease" })}
+            src={require(`./assets/images/${data[previousState].image.desktop}`)}
+          />
+          <ImageNext
+            onClick={() => dispatch({ type: "increase" })}
+            src={require(`./assets/images/${data[nextState].image.desktop}`)}
+          />
+          <HeadlineOutline src={require(`./assets/images/text/${data[state].headline}Outline.svg`)} />
           <Center>
-            <ImageMain src={require(`./assets/images/${data[0].image.desktop}`)} />
-            <HeadlineFilled src={require(`./assets/images/text/${data[0].headline}Filled.svg`)} />
+            <ImageMain src={require(`./assets/images/${data[state].image.desktop}`)} />
+            <HeadlineFilled src={require(`./assets/images/text/${data[state].headline}Filled.svg`)} />
             <Indicator>
-              <IndicatorNumber>{`1 OF ${data.length}`}</IndicatorNumber>
+              <IndicatorNumber>{`${state + 1} OF ${data.length}`}</IndicatorNumber>
               <IndicatorDots>
                 {data.map((element, index) => (
-                  <IndicatorDot key={index} active={index === 1} />
+                  <IndicatorDot
+                    onClick={() => dispatch({ type: "new", payload: index })}
+                    key={index}
+                    active={index === state}
+                  />
                 ))}
               </IndicatorDots>
             </Indicator>
