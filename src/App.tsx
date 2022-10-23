@@ -50,7 +50,16 @@ const ImagePrevious = styled.img`
   border: 1px solid #000;
   border-radius: ${({ theme }) => theme.borderRadius.image};
   cursor: pointer;
-  height: 35%;
+  width: 30vw;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
+    width: 24vw;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
+    height: 35vh;
+    width: auto;
+  }
 `;
 
 const ImageNext = styled.img`
@@ -60,7 +69,16 @@ const ImageNext = styled.img`
   border: 1px solid #000;
   border-radius: ${({ theme }) => theme.borderRadius.image};
   cursor: pointer;
-  height: 35%;
+  width: 30vw;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
+    width: 24vw;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
+    height: 35vh;
+    width: auto;
+  }
 `;
 
 const HeadlineOutline = styled.img`
@@ -68,7 +86,15 @@ const HeadlineOutline = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: calc(40vh + 2px);
+  height: 40vw;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
+    height: 32vw;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
+    height: calc(40vh + 2px);
+  }
 `;
 
 const Center = styled.div`
@@ -76,9 +102,19 @@ const Center = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 75vh;
-  width: calc(56.25vh + 2px); // aspect width of image plus border
   overflow: hidden;
+  height: 80vw;
+  width: calc(60vw + 2px);
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
+    height: 66vw;
+    width: calc(50vw + 2px);
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
+    height: 75vh;
+    width: calc(56.25vh + 2px); // aspect width of image plus border
+  }
 `;
 
 const ImageMain = styled.img`
@@ -92,22 +128,39 @@ const HeadlineFilled = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 40vh;
+  height: 40vw;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
+    height: 32vw;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
+    height: 40vh;
+  }
 `;
 
 const Indicator = styled.div`
   position: absolute;
-  top: calc(50% + 20vh + 16px);
+  top: calc(50% + 20vw + 16px);
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   column-gap: ${({ theme }) => theme.spacings.l};
   justify-content: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
+    top: calc(50% + 16vw + 16px);
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
+    top: calc(50% + 20vh + 16px);
+  }
 `;
 
 const IndicatorNumber = styled.p`
   color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.small};
+  white-space: nowrap;
 `;
 
 const IndicatorDots = styled.div`
@@ -148,25 +201,28 @@ export function App() {
   const previousState = state > 0 ? state - 1 : data.length - 1;
   const nextState = state < data.length - 1 ? state + 1 : initialState;
 
+  // would have a hook called useHandleResize listening to window resize event with debounce
+  const imageType = window.innerWidth <= 768 ? "mobile" : "desktop";
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Slide>
-        <Background src={require(`./assets/images/${data[state].image.desktop}`)} />
+        <Background src={require(`./assets/images/${data[state].image[imageType]}`)} />
         <Container>
           <TopLeft>xyz photography</TopLeft>
           <BottomRight data={data[0]} />
           <ImagePrevious
             onClick={() => dispatch({ type: "decrease" })}
-            src={require(`./assets/images/${data[previousState].image.desktop}`)}
+            src={require(`./assets/images/${data[previousState].image[imageType]}`)}
           />
           <ImageNext
             onClick={() => dispatch({ type: "increase" })}
-            src={require(`./assets/images/${data[nextState].image.desktop}`)}
+            src={require(`./assets/images/${data[nextState].image[imageType]}`)}
           />
           <HeadlineOutline src={require(`./assets/images/text/${data[state].headline}Outline.svg`)} />
           <Center>
-            <ImageMain src={require(`./assets/images/${data[state].image.desktop}`)} />
+            <ImageMain src={require(`./assets/images/${data[state].image[imageType]}`)} />
             <HeadlineFilled src={require(`./assets/images/text/${data[state].headline}Filled.svg`)} />
             <Indicator>
               <IndicatorNumber>{`${state + 1} OF ${data.length}`}</IndicatorNumber>
