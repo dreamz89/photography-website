@@ -1,9 +1,14 @@
-import { useReducer } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import { useCallback, useReducer, useState } from "react";
+import styled, { ThemeProvider, keyframes, css } from "styled-components";
 import { theme } from "assets/styles/theme";
 import { GlobalStyle } from "assets/styles/global";
 import { Details } from "components/Details";
 import { data } from "data";
+
+const fadeOut = keyframes`
+  0% { opacity: 1 }
+  100% { opacity: 0 }
+`;
 
 const Slide = styled.div`
   height: 100vh;
@@ -81,7 +86,7 @@ const ImageNext = styled.img`
   }
 `;
 
-const HeadlineOutline = styled.img`
+const HeadlineOutline = styled.img<{ isChanging: boolean }>`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -93,8 +98,14 @@ const HeadlineOutline = styled.img`
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
-    height: calc(40vh + 2px);
+    height: 40vh;
   }
+
+  ${({ isChanging }) =>
+    isChanging &&
+    css`
+      animation: 0.3s ease-out ${fadeOut};
+    `}
 `;
 
 const Center = styled.div`
@@ -117,13 +128,19 @@ const Center = styled.div`
   }
 `;
 
-const ImageMain = styled.img`
+const ImageMain = styled.img<{ isChanging: boolean }>`
   border: 1px solid #000;
   border-radius: ${({ theme }) => theme.borderRadius.image};
   height: 100%;
+
+  ${({ isChanging }) =>
+    isChanging &&
+    css`
+      animation: 0.3s ease-out ${fadeOut};
+    `}
 `;
 
-const HeadlineFilled = styled.img`
+const HeadlineFilled = styled.img<{ isChanging: boolean }>`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -137,6 +154,12 @@ const HeadlineFilled = styled.img`
   @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
     height: 40vh;
   }
+
+  ${({ isChanging }) =>
+    isChanging &&
+    css`
+      animation: 0.3s ease-out ${fadeOut};
+    `}
 `;
 
 const Indicator = styled.div`
@@ -197,12 +220,22 @@ function reducer(state: number, action: Action) {
 
 export function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isChanging, setIsChanging] = useState<boolean>(false);
 
   const previousState = state > 0 ? state - 1 : data.length - 1;
   const nextState = state < data.length - 1 ? state + 1 : initialState;
 
   // would have a hook called useHandleResize listening to window resize event with debounce
   const imageType = window.innerWidth <= 768 ? "mobile" : "desktop";
+
+  const changeSlide = useCallback((action: Action) => {
+    setIsChanging(true);
+
+    setTimeout(() => {
+      setIsChanging(false);
+      dispatch(action);
+    }, 300);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -213,23 +246,29 @@ export function App() {
           <TopLeft>xyz photography</TopLeft>
           <BottomRight data={data[0]} />
           <ImagePrevious
-            onClick={() => dispatch({ type: "decrease" })}
+            onClick={() => changeSlide({ type: "decrease" })}
             src={require(`./assets/images/${data[previousState].image[imageType]}`)}
           />
           <ImageNext
-            onClick={() => dispatch({ type: "increase" })}
+            onClick={() => changeSlide({ type: "increase" })}
             src={require(`./assets/images/${data[nextState].image[imageType]}`)}
           />
-          <HeadlineOutline src={require(`./assets/images/text/${data[state].headline}Outline.svg`)} />
+          <HeadlineOutline
+            isChanging={isChanging}
+            src={require(`./assets/images/text/${data[state].headline}Outline.svg`)}
+          />
           <Center>
-            <ImageMain src={require(`./assets/images/${data[state].image[imageType]}`)} />
-            <HeadlineFilled src={require(`./assets/images/text/${data[state].headline}Filled.svg`)} />
+            <ImageMain isChanging={isChanging} src={require(`./assets/images/${data[state].image[imageType]}`)} />
+            <HeadlineFilled
+              isChanging={isChanging}
+              src={require(`./assets/images/text/${data[state].headline}Filled.svg`)}
+            />
             <Indicator>
               <IndicatorNumber>{`${state + 1} OF ${data.length}`}</IndicatorNumber>
               <IndicatorDots>
                 {data.map((element, index) => (
                   <IndicatorDot
-                    onClick={() => dispatch({ type: "new", payload: index })}
+                    onClick={() => changeSlide({ type: "new", payload: index })}
                     key={index}
                     active={index === state}
                   />
